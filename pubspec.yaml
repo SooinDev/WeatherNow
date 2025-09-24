@@ -1,0 +1,57 @@
+name: weather_minimal
+description: 미니멀리스트 날씨 앱
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # 상태 관리
+  get: ^4.6.6
+  
+  # HTTP 통신
+  dio: ^5.3.2
+  
+  # 위치 서비스
+  geolocator: ^10.1.0
+  geocoding: ^2.1.1
+  
+  # 애니메이션
+  lottie: ^2.7.0
+  flutter_staggered_animations: ^1.1.1
+  
+  # 저장소
+  shared_preferences: ^2.2.2
+
+  # 환경변수
+  flutter_dotenv: ^5.1.0
+
+  # 권한
+  permission_handler: ^11.0.1
+  
+  # UI
+  flutter_screenutil: ^5.9.0
+  google_fonts: ^6.1.0
+  
+  # 기본 아이콘
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/images/weather_icons/
+    - assets/images/backgrounds/
+    - assets/animations/
+    - assets/animations/lottie/
+    - .env
