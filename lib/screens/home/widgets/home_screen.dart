@@ -115,8 +115,13 @@ class HomeScreen extends StatelessWidget {
 
           SizedBox(height: 30.h),
 
-          // 하단 힌트
+          // 하단 힌트들
           _buildBottomHint(),
+
+          SizedBox(height: 8.h),
+
+          // 상세 정보 힌트
+          _buildDetailHint(),
 
           SizedBox(height: 32.h),
         ],
@@ -438,6 +443,59 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildDetailHint() {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+      margin: EdgeInsets.symmetric(horizontal: 32.w),
+      decoration: BoxDecoration(
+        color: AppColors.white10,
+        borderRadius: BorderRadius.circular(25.r),
+        border: Border.all(
+          color: AppColors.white20,
+          width: 0.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.black10,
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.touch_app_outlined,
+            color: AppColors.white30.withValues(alpha: 0.8),
+            size: 12.sp,
+          ),
+          SizedBox(width: 8.w),
+          Flexible(
+            child: GetBuilder<AppController>(
+              builder: (controller) => Text(
+                '온도를 길게 터치하여 상세 정보 보기',
+                style: AppTextStyles.caption.copyWith(
+                  color: controller.isTextColorChanged
+                      ? AppConstants.swipedAccentTextColor
+                      : AppConstants.darkPrimaryTextColor,
+                  fontSize: 11.sp,
+                  letterSpacing: 0.5,
+                  fontWeight: FontWeight.w400,
+                  height: 1.2
+                ),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

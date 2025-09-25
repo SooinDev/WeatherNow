@@ -36,6 +36,7 @@ dependencies:
   # UI
   flutter_screenutil: ^5.9.0
   google_fonts: ^6.1.0
+  fl_chart: ^0.66.0
   
   # 기본 아이콘
   cupertino_icons: ^1.0.2

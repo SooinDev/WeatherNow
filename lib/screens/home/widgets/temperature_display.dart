@@ -6,6 +6,8 @@ import '../../../utils/colors.dart';
 import '../../../utils/constants.dart';
 import 'package:get/get.dart';
 import '../../../controllers/app_controller.dart';
+import '../../../services/weather_service.dart';
+import '../../detail/widgets/weather_detail_screen.dart';
 
 class TemperatureDisplay extends StatelessWidget {
   final WeatherModel? weather;
@@ -50,6 +52,46 @@ class TemperatureDisplay extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTemperatureUnitToggle,
+      onLongPress: () async {
+        final controller = Get.find<AppController>();
+        if (controller.currentWeather != null && controller.currentLocation != null) {
+          // 추가 날씨 데이터 로드
+          final weatherService = Get.find<WeatherService>();
+
+          final hourlyWeather = await weatherService.getHourlyForecast(controller.currentLocation!);
+          final airQuality = await weatherService.getAirPollution(controller.currentLocation!);
+          final uvIndex = await weatherService.getUVIndex(controller.currentLocation!);
+
+          // 상세 화면 열기
+          if (context.mounted) {
+            Navigator.of(context).push(
+              PageRouteBuilder(
+                pageBuilder: (context, animation, _) => WeatherDetailScreen(
+                  weather: controller.currentWeather!,
+                  hourlyWeather: hourlyWeather,
+                  airQuality: airQuality != null ? AirQualityModel.fromJson(airQuality) : null,
+                  uvIndex: uvIndex,
+                  weatherType: controller.currentWeather!.condition,
+                  onClose: () => Navigator.of(context).pop(),
+                ),
+                transitionDuration: const Duration(milliseconds: 300),
+                transitionsBuilder: (context, animation, _, child) {
+                  return SlideTransition(
+                    position: Tween<Offset>(
+                      begin: const Offset(0.0, 1.0),
+                      end: Offset.zero,
+                    ).animate(CurvedAnimation(
+                      parent: animation,
+                      curve: Curves.easeOut,
+                    )),
+                    child: child,
+                  );
+                },
+              ),
+            );
+          }
+        }
+      },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

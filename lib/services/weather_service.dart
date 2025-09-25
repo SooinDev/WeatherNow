@@ -148,7 +148,7 @@ class WeatherService extends GetxService {
   }
 
   // 5일 예보 가져오기 (3시간 간격)
-  Future<List<WeatherModel>?> getHourlyForecast(LocationModel location) async {
+  Future<List<HourlyWeatherModel>?> getHourlyForecast(LocationModel location) async {
     try {
       final response = await _dio.get(
         '/forecast',
@@ -163,7 +163,7 @@ class WeatherService extends GetxService {
       if (response.statusCode == 200) {
         final List<dynamic> forecastList = response.data['list'];
         return forecastList
-            .map((forecast) => WeatherModel.fromJson(forecast))
+            .map((forecast) => HourlyWeatherModel.fromJson(forecast))
             .toList();
       }
 

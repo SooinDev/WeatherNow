@@ -54,6 +54,12 @@ class StorageService {
         'uvIndex': weather.uvIndex,
         'updatedAt': weather.updatedAt.toIso8601String(),
         'weatherType': weather.weatherType.toString(),
+        'pressure': weather.pressure,
+        'visibility': weather.visibility,
+        'sunrise': weather.sunrise?.toIso8601String(),
+        'sunset': weather.sunset?.toIso8601String(),
+        'windDegree': weather.windDegree,
+        'iconCode': weather.iconCode,
       };
 
       final weatherJson = json.encode(weatherData);
@@ -100,6 +106,12 @@ class StorageService {
           uvIndex: weatherMap['uvIndex'],
           updatedAt: DateTime.parse(weatherMap['updatedAt']),
           weatherType: weatherType,
+          pressure: weatherMap['pressure'],
+          visibility: weatherMap['visibility'],
+          sunrise: weatherMap['sunrise'] != null ? DateTime.parse(weatherMap['sunrise']) : null,
+          sunset: weatherMap['sunset'] != null ? DateTime.parse(weatherMap['sunset']) : null,
+          windDegree: weatherMap['windDegree'],
+          iconCode: weatherMap['iconCode'] ?? '01d',
         );
       }
       return null;
