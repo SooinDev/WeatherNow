@@ -48,7 +48,7 @@ class _WindCompassState extends State<WindCompass>
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -68,14 +68,14 @@ class _WindCompassState extends State<WindCompass>
               ],
             ),
           ),
-          SizedBox(height: 16.h),
+          SizedBox(height: 12.h),
           Row(
             children: [
               // 나침반
               Expanded(
                 flex: 2,
                 child: SizedBox(
-                  height: 180.w,
+                  height: 120.w,
                   child: AnimatedBuilder(
                     animation: _rotationAnimation,
                     builder: (context, child) {
@@ -84,7 +84,7 @@ class _WindCompassState extends State<WindCompass>
                           windDirection: _rotationAnimation.value,
                           windSpeed: widget.weather.windSpeed,
                         ),
-                        size: Size(180.w, 180.w),
+                        size: Size(120.w, 120.w),
                       );
                     },
                   ),
@@ -226,16 +226,23 @@ class CompassPainter extends CustomPainter {
     for (int i = 0; i < directions.length; i++) {
       final angle = angles[i] * math.pi / 180;
       final directionOffset = Offset(
-        center.dx + (radius - 15) * math.sin(angle),
-        center.dy - (radius - 15) * math.cos(angle),
+        center.dx + (radius - 18) * math.sin(angle),
+        center.dy - (radius - 18) * math.cos(angle),
       );
 
       textPainter.text = TextSpan(
         text: directions[i],
         style: TextStyle(
           color: Colors.white,
-          fontSize: 14.sp,
+          fontSize: 12.sp,
           fontWeight: FontWeight.bold,
+          shadows: [
+            Shadow(
+              offset: const Offset(0, 1),
+              blurRadius: 2.0,
+              color: Colors.black.withValues(alpha: 0.5),
+            ),
+          ],
         ),
       );
 
@@ -251,13 +258,13 @@ class CompassPainter extends CustomPainter {
 
     // 작은 방향 표시선
     final smallLinePaint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.5)
+      ..color = Colors.white.withValues(alpha: 0.4)
       ..strokeWidth = 1;
 
     for (int i = 0; i < 360; i += 30) {
       final angle = i * math.pi / 180;
-      final startRadius = radius - 10;
-      final endRadius = radius - 5;
+      final startRadius = radius - 12;
+      final endRadius = radius - 8;
 
       final start = Offset(
         center.dx + startRadius * math.sin(angle),

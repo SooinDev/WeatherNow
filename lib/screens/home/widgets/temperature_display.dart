@@ -51,8 +51,8 @@ class TemperatureDisplay extends StatelessWidget {
         : (weather!.temperatureInCelsius * 9 / 5) + 32;
 
     return GestureDetector(
-      onTap: onTemperatureUnitToggle,
-      onLongPress: () async {
+      behavior: HitTestBehavior.opaque,
+      onTap: () async {
         final controller = Get.find<AppController>();
         if (controller.currentWeather != null && controller.currentLocation != null) {
           // 추가 날씨 데이터 로드
@@ -92,9 +92,11 @@ class TemperatureDisplay extends StatelessWidget {
           }
         }
       },
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 20.h),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
           // 애니메이션이 적용된 온도 표시
           TweenAnimationBuilder<double>(
             key: ValueKey('${temperature.round()}°'),
@@ -128,54 +130,58 @@ class TemperatureDisplay extends StatelessWidget {
 
           SizedBox(height: 16.h),
 
-          // 애니메이션이 적용된 단위 표시
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-            decoration: BoxDecoration(
-              color: AppColors.white10,
-              borderRadius: BorderRadius.circular(20.r),
-              border: Border.all(
-                color: AppColors.white20,
-                width: 0.5,
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.black10,
-                  blurRadius: 6,
-                  offset: const Offset(0, 2),
+          // 애니메이션이 적용된 단위 표시 (탭하면 단위 변경)
+          GestureDetector(
+            onTap: onTemperatureUnitToggle,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              decoration: BoxDecoration(
+                color: AppColors.white10,
+                borderRadius: BorderRadius.circular(20.r),
+                border: Border.all(
+                  color: AppColors.white20,
+                  width: 0.5,
                 ),
-              ],
-            ),
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 200),
-              transitionBuilder: (Widget child, Animation<double> animation) {
-                return ScaleTransition(
-                  scale: animation,
-                  child: child,
-                );
-              },
-              child: GetBuilder<AppController>(
-                builder: (controller) => Text(
-                  isCelsius ? '섭씨' : '화씨',
-                  key: ValueKey(isCelsius),
-                  style: AppTextStyles.temperatureSmall.copyWith(
-                    color: controller.isTextColorChanged
-                        ? AppConstants.swipedSecondaryTextColor
-                        : AppConstants.darkPrimaryTextColor,
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.5,
-                    height: 1.1
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.black10,
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
                   ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
+                ],
+              ),
+              child: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return ScaleTransition(
+                    scale: animation,
+                    child: child,
+                  );
+                },
+                child: GetBuilder<AppController>(
+                  builder: (controller) => Text(
+                    isCelsius ? '섭씨' : '화씨',
+                    key: ValueKey(isCelsius),
+                    style: AppTextStyles.temperatureSmall.copyWith(
+                      color: controller.isTextColorChanged
+                          ? AppConstants.swipedSecondaryTextColor
+                          : AppConstants.darkPrimaryTextColor,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.5,
+                      height: 1.1
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
                 ),
               ),
             ),
           ),
-        ],
+          ],
+        ),
       ),
     );
   }

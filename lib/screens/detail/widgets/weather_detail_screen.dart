@@ -170,7 +170,7 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
             child: Container(
               padding: EdgeInsets.all(8.w),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.2),
+                color: Colors.white.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(20.r),
               ),
               child: Icon(
@@ -190,7 +190,7 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
+        color: Colors.white.withValues(alpha: 0.25),
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(
           color: Colors.white.withValues(alpha: 0.3),
@@ -253,7 +253,7 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 8.w),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
+        color: Colors.white.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
@@ -303,9 +303,9 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
 
   Widget _buildChartSection(Widget chart) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+      margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
+        color: Colors.white.withValues(alpha: 0.25),
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(
           color: Colors.white.withValues(alpha: 0.3),
@@ -321,7 +321,7 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
       margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.15),
+        color: Colors.white.withValues(alpha: 0.25),
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(
           color: Colors.white.withValues(alpha: 0.3),
@@ -374,7 +374,7 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
             width: double.infinity,
             padding: EdgeInsets.symmetric(vertical: 16.h),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.1),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(12.r),
             ),
             child: Column(
@@ -444,7 +444,7 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
+        color: Colors.white.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
