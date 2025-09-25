@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../controllers/app_controller.dart';
+import '../../../models/weather_model.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/text_styles.dart';
 import '../../../utils/constants.dart';
@@ -108,7 +109,7 @@ class HomeScreen extends StatelessWidget {
 
           // 추가 정보 영역
           SizedBox(
-            height: 120.h,
+            height: 160.h, // 120.h에서 160.h로 높이 증가
             child: _buildAdditionalInfo(controller),
           ),
 
@@ -150,12 +151,21 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          // 날씨 설명
-          AnimatedDefaultTextStyle(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // 날씨 설명 - clean and simple
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          decoration: BoxDecoration(
+            color: Colors.white.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(20.r),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.3),
+              width: 1,
+            ),
+          ),
+          child: AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 300),
             style: AppTextStyles.weatherDescription.copyWith(
               fontSize: 13.sp,
@@ -171,39 +181,39 @@ class HomeScreen extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-
-          SizedBox(height: 16.h),
-
-          // 상세 정보 행
-          IntrinsicHeight(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildWeatherDetail(
-                  '체감',
-                  '${weather.feelsLikeInCelsius.round()}°',
-                  Icons.thermostat_outlined,
-                  controller,
-                ),
-                _buildDivider(),
-                _buildWeatherDetail(
-                  '습도',
-                  '${weather.humidity}%',
-                  Icons.water_drop_outlined,
-                  controller,
-                ),
-                _buildDivider(),
-                _buildWeatherDetail(
-                  '바람',
-                  '${weather.windSpeed.round()}m/s',
-                  Icons.air,
-                  controller,
-                ),
-              ],
-            ),
-          ),
-          ],
         ),
+
+        SizedBox(height: 16.h),
+
+        // 상세 정보 행
+        IntrinsicHeight(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildWeatherDetail(
+                '체감',
+                '${weather.feelsLikeInCelsius.round()}°',
+                Icons.thermostat_outlined,
+                controller,
+              ),
+              _buildDivider(),
+              _buildWeatherDetail(
+                '습도',
+                '${weather.humidity}%',
+                Icons.water_drop_outlined,
+                controller,
+              ),
+              _buildDivider(),
+              _buildWeatherDetail(
+                '바람',
+                '${weather.windSpeed.round()}m/s',
+                Icons.air,
+                controller,
+              ),
+            ],
+          ),
+        ),
+        ],
       ),
     );
   }
