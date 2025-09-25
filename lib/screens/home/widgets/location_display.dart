@@ -24,7 +24,15 @@ class LocationDisplay extends StatelessWidget {
         duration: const Duration(milliseconds: 800),
         padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 10.h),
         decoration: BoxDecoration(
-          color: AppColors.white10,
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Colors.black.withValues(alpha: 0.06),
+              Colors.black.withValues(alpha: 0.12),
+              Colors.black.withValues(alpha: 0.09),
+            ],
+          ),
           borderRadius: BorderRadius.circular(18.r),
           border: Border.all(
             color: AppColors.white20,
@@ -71,7 +79,15 @@ class LocationDisplay extends StatelessWidget {
       curve: Curves.easeInOut,
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
       decoration: BoxDecoration(
-        color: AppColors.white10,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.black.withValues(alpha: 0.1),
+            Colors.black.withValues(alpha: 0.2),
+            Colors.black.withValues(alpha: 0.15),
+          ],
+        ),
         borderRadius: BorderRadius.circular(20.r),
         border: Border.all(
           color: AppColors.white20,

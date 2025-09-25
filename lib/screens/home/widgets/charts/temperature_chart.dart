@@ -61,8 +61,8 @@ class TemperatureChart extends StatelessWidget {
                       interval: 1,
                       getTitlesWidget: (double value, TitleMeta meta) {
                         final index = value.toInt();
-                        // 4시간 간격으로 표시하여 충분한 간격 확보
-                        if (index >= 0 && index < hourlyWeather.length && index % 4 == 0) {
+                        // 8시간 간격으로 표시하여 훨씬 더 넓은 간격 확보
+                        if (index >= 0 && index < hourlyWeather.length && index % 8 == 0) {
                           final hour = hourlyWeather[index].time.hour;
                           return Container(
                             margin: EdgeInsets.only(top: 12.h),
@@ -121,15 +121,15 @@ class TemperatureChart extends StatelessWidget {
                     spots: _getTemperatureSpots(),
                     isCurved: true,
                     color: Colors.white,
-                    barWidth: 1.5,
+                    barWidth: 2.5,
                     isStrokeCapRound: true,
                     dotData: FlDotData(
                       show: true,
                       getDotPainter: (spot, percent, barData, index) {
                         return FlDotCirclePainter(
-                          radius: 2.5,
+                          radius: 3.5,
                           color: Colors.white,
-                          strokeWidth: 1,
+                          strokeWidth: 1.5,
                           strokeColor: AppColors.white30,
                         );
                       },
@@ -180,10 +180,13 @@ class TemperatureChart extends StatelessWidget {
   }
 
   List<FlSpot> _getTemperatureSpots() {
-    return List.generate(hourlyWeather.length, (index) {
-      final temp = hourlyWeather[index].temperature;
-      return FlSpot(index.toDouble(), temp);
-    });
+    // 3시간 간격으로 데이터 포인트를 줄여서 덜 촘촘하게 표시
+    List<FlSpot> spots = [];
+    for (int i = 0; i < hourlyWeather.length; i += 3) {
+      final temp = hourlyWeather[i].temperature;
+      spots.add(FlSpot(i.toDouble(), temp));
+    }
+    return spots;
   }
 
   double _getMinTemp() {

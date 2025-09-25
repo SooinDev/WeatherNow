@@ -94,7 +94,7 @@ class _WeatherAnimationState extends State<WeatherAnimation>
         y: 0.1 + random.nextDouble() * 0.4,
         speed: 0.0005 + random.nextDouble() * 0.002,
         scale: 0.6 + random.nextDouble() * 0.8,
-        opacity: 0.3 + random.nextDouble() * 0.4,
+        opacity: 0.1 + random.nextDouble() * 0.15, // 불투명도를 더 낮춤
       ));
     }
   }
@@ -512,8 +512,8 @@ class CloudPainter extends CustomPainter {
   void _drawCloud(Canvas canvas, Offset center, double size, double opacity) {
     final paint = Paint()
       ..color = (isLightClouds ? Colors.white : Colors.grey.shade300)
-          .withValues(alpha: opacity)
-      ..maskFilter = const ui.MaskFilter.blur(ui.BlurStyle.normal, 8.0);
+          .withValues(alpha: opacity * 0.4) // 전체적으로 훨씬 더 투명하게
+      ..maskFilter = const ui.MaskFilter.blur(ui.BlurStyle.normal, 12.0); // 블러 효과 증가
 
     // 구름 모양을 여러 원으로 구성
     final cloudParts = [
@@ -553,7 +553,7 @@ class FogPainter extends CustomPainter {
     // 여러 층의 안개 효과
     for (int i = 0; i < 5; i++) {
       final y = size.height * (0.2 + i * 0.15);
-      final opacity = 0.1 + sin(animationValue * 2 * pi + i) * 0.05;
+      final opacity = 0.05 + sin(animationValue * 2 * pi + i) * 0.03; // 안개 불투명도 감소
 
       paint.shader = ui.Gradient.linear(
         Offset(0, y - 30),

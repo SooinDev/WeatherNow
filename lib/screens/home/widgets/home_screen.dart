@@ -64,7 +64,8 @@ class HomeScreen extends StatelessWidget {
                   child: WeeklyScreen(
                     onClose: () => controller.hideWeeklyView(),
                     weeklyWeather: controller.weeklyWeather ?? [],
-                    weatherType: controller.currentWeather?.condition ?? 'Clear',
+                    weatherType:
+                        controller.currentWeather?.condition ?? 'Clear',
                   ),
                 ),
             ],
@@ -142,7 +143,15 @@ class HomeScreen extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 24.w),
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
       decoration: BoxDecoration(
-        color: AppColors.white10,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.black.withValues(alpha: 0.07),
+            Colors.black.withValues(alpha: 0.14),
+            Colors.black.withValues(alpha: 0.11),
+          ],
+        ),
         borderRadius: BorderRadius.circular(24.r),
         border: Border.all(
           color: AppColors.white20,
@@ -160,70 +169,77 @@ class HomeScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // 날씨 설명 - clean and simple
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(20.r),
-            border: Border.all(
-              color: Colors.white.withValues(alpha: 0.3),
-              width: 1,
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withValues(alpha: 0.06),
+                  Colors.black.withValues(alpha: 0.12),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(20.r),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.3),
+                width: 1,
+              ),
+            ),
+            child: AnimatedDefaultTextStyle(
+              duration: const Duration(milliseconds: 300),
+              style: AppTextStyles.weatherDescription.copyWith(
+                  fontSize: 13.sp,
+                  letterSpacing: 1.0,
+                  fontWeight: FontWeight.w400,
+                  color: controller.isTextColorChanged
+                      ? AppConstants.swipedPrimaryTextColor
+                      : AppConstants.darkPrimaryTextColor,
+                  height: 1.2),
+              child: Text(
+                weather.description.toUpperCase(),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
-          child: AnimatedDefaultTextStyle(
-            duration: const Duration(milliseconds: 300),
-            style: AppTextStyles.weatherDescription.copyWith(
-              fontSize: 13.sp,
-              letterSpacing: 1.0,
-              fontWeight: FontWeight.w400,
-              color: controller.isTextColorChanged
-                  ? AppConstants.swipedPrimaryTextColor
-                  : AppConstants.darkPrimaryTextColor,
-              height: 1.2
-            ),
-            child: Text(
-              weather.description.toUpperCase(),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
 
-        SizedBox(height: 16.h),
+          SizedBox(height: 16.h),
 
-        // 상세 정보 행
-        IntrinsicHeight(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildWeatherDetail(
-                '체감',
-                '${weather.feelsLikeInCelsius.round()}°',
-                Icons.thermostat_outlined,
-                controller,
-              ),
-              _buildDivider(),
-              _buildWeatherDetail(
-                '습도',
-                '${weather.humidity}%',
-                Icons.water_drop_outlined,
-                controller,
-              ),
-              _buildDivider(),
-              _buildWeatherDetail(
-                '바람',
-                '${weather.windSpeed.round()}m/s',
-                Icons.air,
-                controller,
-              ),
-            ],
+          // 상세 정보 행
+          IntrinsicHeight(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _buildWeatherDetail(
+                  '체감',
+                  '${weather.feelsLikeInCelsius.round()}°',
+                  Icons.thermostat_outlined,
+                  controller,
+                ),
+                _buildDivider(),
+                _buildWeatherDetail(
+                  '습도',
+                  '${weather.humidity}%',
+                  Icons.water_drop_outlined,
+                  controller,
+                ),
+                _buildDivider(),
+                _buildWeatherDetail(
+                  '바람',
+                  '${weather.windSpeed.round()}m/s',
+                  Icons.air,
+                  controller,
+                ),
+              ],
+            ),
           ),
-        ),
         ],
       ),
     );
   }
 
-  Widget _buildWeatherDetail(String label, String value, IconData icon, AppController controller) {
+  Widget _buildWeatherDetail(
+      String label, String value, IconData icon, AppController controller) {
     return Flexible(
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
@@ -243,14 +259,13 @@ class HomeScreen extends StatelessWidget {
               child: Text(
                 label.toUpperCase(),
                 style: AppTextStyles.detailLabel.copyWith(
-                  fontSize: 10.sp,
-                  letterSpacing: 0.8,
-                  fontWeight: FontWeight.w400,
-                  color: controller.isTextColorChanged
-                      ? AppConstants.swipedAccentTextColor
-                      : AppConstants.darkPrimaryTextColor,
-                  height: 1.1
-                ),
+                    fontSize: 10.sp,
+                    letterSpacing: 0.8,
+                    fontWeight: FontWeight.w400,
+                    color: controller.isTextColorChanged
+                        ? AppConstants.swipedAccentTextColor
+                        : AppConstants.darkPrimaryTextColor,
+                    height: 1.1),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -260,14 +275,13 @@ class HomeScreen extends StatelessWidget {
               child: Text(
                 value,
                 style: AppTextStyles.detailValue.copyWith(
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 0.3,
-                  color: controller.isTextColorChanged
-                      ? AppConstants.swipedPrimaryTextColor
-                      : AppConstants.darkPrimaryTextColor,
-                  height: 1.1
-                ),
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 0.3,
+                    color: controller.isTextColorChanged
+                        ? AppConstants.swipedPrimaryTextColor
+                        : AppConstants.darkPrimaryTextColor,
+                    height: 1.1),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -301,7 +315,15 @@ class HomeScreen extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
       margin: EdgeInsets.symmetric(horizontal: 32.w),
       decoration: BoxDecoration(
-        color: AppColors.white10,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.black.withValues(alpha: 0.06),
+            Colors.black.withValues(alpha: 0.12),
+            Colors.black.withValues(alpha: 0.09),
+          ],
+        ),
         borderRadius: BorderRadius.circular(25.r),
         border: Border.all(
           color: AppColors.white20,
@@ -327,7 +349,8 @@ class HomeScreen extends StatelessWidget {
                 offset: Offset(0, -5 * (1 - value)),
                 child: Icon(
                   Icons.keyboard_arrow_up_rounded,
-                  color: AppColors.white30.withValues(alpha: 0.6 + (0.4 * value)),
+                  color:
+                      AppColors.white30.withValues(alpha: 0.6 + (0.4 * value)),
                   size: 14.sp,
                 ),
               );
@@ -339,14 +362,13 @@ class HomeScreen extends StatelessWidget {
               builder: (controller) => Text(
                 '위로 스와이프하여 주간 날씨 보기',
                 style: AppTextStyles.caption.copyWith(
-                  color: controller.isTextColorChanged
-                      ? AppConstants.swipedAccentTextColor
-                      : AppConstants.darkPrimaryTextColor,
-                  fontSize: 12.sp,
-                  letterSpacing: 0.5,
-                  fontWeight: FontWeight.w400,
-                  height: 1.2
-                ),
+                    color: controller.isTextColorChanged
+                        ? AppConstants.swipedAccentTextColor
+                        : AppConstants.darkPrimaryTextColor,
+                    fontSize: 12.sp,
+                    letterSpacing: 0.5,
+                    fontWeight: FontWeight.w400,
+                    height: 1.2),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),
@@ -453,7 +475,15 @@ class HomeScreen extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
       margin: EdgeInsets.symmetric(horizontal: 32.w),
       decoration: BoxDecoration(
-        color: AppColors.white10,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.black.withValues(alpha: 0.06),
+            Colors.black.withValues(alpha: 0.12),
+            Colors.black.withValues(alpha: 0.09),
+          ],
+        ),
         borderRadius: BorderRadius.circular(25.r),
         border: Border.all(
           color: AppColors.white20,
@@ -480,16 +510,15 @@ class HomeScreen extends StatelessWidget {
           Flexible(
             child: GetBuilder<AppController>(
               builder: (controller) => Text(
-                '온도를 길게 터치하여 상세 정보 보기',
+                '온도를 터치하여 상세 정보 보기',
                 style: AppTextStyles.caption.copyWith(
-                  color: controller.isTextColorChanged
-                      ? AppConstants.swipedAccentTextColor
-                      : AppConstants.darkPrimaryTextColor,
-                  fontSize: 11.sp,
-                  letterSpacing: 0.5,
-                  fontWeight: FontWeight.w400,
-                  height: 1.2
-                ),
+                    color: controller.isTextColorChanged
+                        ? AppConstants.swipedAccentTextColor
+                        : AppConstants.darkPrimaryTextColor,
+                    fontSize: 11.sp,
+                    letterSpacing: 0.5,
+                    fontWeight: FontWeight.w400,
+                    height: 1.2),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),

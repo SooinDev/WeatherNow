@@ -7,7 +7,6 @@ import '../../home/widgets/charts/temperature_chart.dart';
 import '../../home/widgets/charts/precipitation_chart.dart';
 import '../../home/widgets/charts/wind_compass.dart';
 import '../../home/widgets/gradient_background.dart';
-import '../../home/widgets/weather_animation.dart';
 
 class WeatherDetailScreen extends StatefulWidget {
   final VoidCallback onClose;
@@ -67,17 +66,27 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
       },
       child: Stack(
         children: [
-          // 메인화면과 동일한 배경 적용
+          // 메인화면과 동일한 배경 적용 (강도 줄임)
           GradientBackground(
             weatherType: widget.weatherType,
-            opacity: 1.0,
+            opacity: 0.6,
           ),
 
-          // 날씨 애니메이션 (메인화면과 동일)
-          WeatherAnimation(
-            weatherType: _getWeatherType(widget.weatherType),
-            opacity: 1.0,
+          // 어두운 색상 오버레이
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withValues(alpha: 0.3),
+                  Colors.black.withValues(alpha: 0.5),
+                  Colors.black.withValues(alpha: 0.4),
+                ],
+              ),
+            ),
           ),
+
 
           // 메인 컨텐츠
           SafeArea(
@@ -387,7 +396,7 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
                     fontWeight: FontWeight.w500,
                     shadows: [
                       Shadow(
-                        offset: Offset(0, 1),
+                        offset: const Offset(0, 1),
                         blurRadius: 2.0,
                         color: Colors.black.withValues(alpha: 0.3),
                       ),
@@ -487,36 +496,6 @@ class _WeatherDetailScreenState extends State<WeatherDetailScreen> {
     );
   }
 
-  WeatherType _getWeatherType(String weatherType) {
-    switch (weatherType.toLowerCase()) {
-      case 'clear':
-        return WeatherType.sunny;
-      case 'sunny':
-        return WeatherType.sunny;
-      case 'cloudy':
-        return WeatherType.cloudy;
-      case 'overcast':
-        return WeatherType.cloudy;
-      case 'rain':
-        return WeatherType.rainy;
-      case 'drizzle':
-        return WeatherType.rainy;
-      case 'shower':
-        return WeatherType.rainy;
-      case 'thunderstorm':
-        return WeatherType.stormy;
-      case 'snow':
-        return WeatherType.snowy;
-      case 'blizzard':
-        return WeatherType.snowy;
-      case 'fog':
-        return WeatherType.foggy;
-      case 'mist':
-        return WeatherType.foggy;
-      default:
-        return WeatherType.sunny;
-    }
-  }
 
   Color _getAirQualityColor() {
     if (widget.airQuality == null) return Colors.grey;
