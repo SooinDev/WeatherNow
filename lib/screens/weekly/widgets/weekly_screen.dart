@@ -197,6 +197,32 @@ class _WeeklyScreenState extends State<WeeklyScreen>
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
+                  // 날씨 상태 아이콘 추가
+                  Expanded(
+                    flex: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          _getWeatherIcon(day.weatherType),
+                          size: 20.sp,
+                          color: AppConstants.darkPrimaryTextColor.withValues(alpha: 0.8),
+                        ),
+                        SizedBox(width: 4.w),
+                        Flexible(
+                          child: Text(
+                            _getWeatherDescription(day.condition),
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w500,
+                              color: AppConstants.darkPrimaryTextColor.withValues(alpha: 0.7),
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Expanded(
                     flex: 2,
                     child: Row(
@@ -278,5 +304,44 @@ class _WeeklyScreenState extends State<WeeklyScreen>
   String _getDayName(DateTime date) {
     final weekdays = ['월', '화', '수', '목', '금', '토', '일'];
     return weekdays[date.weekday - 1];
+  }
+
+  IconData _getWeatherIcon(WeatherType weatherType) {
+    switch (weatherType) {
+      case WeatherType.sunny:
+        return Icons.wb_sunny;
+      case WeatherType.cloudy:
+        return Icons.cloud;
+      case WeatherType.rainy:
+        return Icons.water_drop;
+      case WeatherType.snowy:
+        return Icons.ac_unit;
+      case WeatherType.stormy:
+        return Icons.thunderstorm;
+      case WeatherType.foggy:
+        return Icons.foggy;
+    }
+  }
+
+  String _getWeatherDescription(String condition) {
+    switch (condition.toLowerCase()) {
+      case 'clear':
+        return '맑음';
+      case 'clouds':
+        return '흐림';
+      case 'rain':
+        return '비';
+      case 'drizzle':
+        return '이슬비';
+      case 'snow':
+        return '눈';
+      case 'thunderstorm':
+        return '뇌우';
+      case 'mist':
+      case 'fog':
+        return '안개';
+      default:
+        return condition;
+    }
   }
 }
