@@ -70,15 +70,8 @@ class HomeScreen extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: double.infinity,
-      child: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: MediaQuery.of(Get.context!).size.height -
-                     MediaQuery.of(Get.context!).padding.top,
-          ),
-          child: Column(
-              children: [
+      child: Column(
+        children: [
               // 상단 여백 (iOS 스타일)
               SizedBox(height: 20.h),
 
@@ -88,11 +81,9 @@ class HomeScreen extends StatelessWidget {
                 weatherType: controller.currentWeather?.condition ?? 'Clear',
               ),
 
-              SizedBox(height: 24.h),
-
-              // 메인 온도 영역 (스와이프 감지 추가)
-              SizedBox(
-                height: 280.h,
+              // 메인 온도 영역을 Expanded로 감싸서 가용 공간 활용
+              Expanded(
+                flex: 3,
                 child: GestureDetector(
                   onPanUpdate: (details) {
                     // 위로 스와이프 감지 (빠른 움직임)
@@ -114,25 +105,28 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: 16.h),
-
               // 추가 정보 영역
               _buildAdditionalInfo(controller),
 
-              SizedBox(height: 30.h),
+              // 하단 여백을 Expanded로 조정
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // 하단 힌트들
+                    _buildBottomHint(),
 
-              // 하단 힌트들
-              _buildBottomHint(),
+                    SizedBox(height: 6.h),
 
-              SizedBox(height: 6.h),
+                    // 상세 정보 힌트
+                    _buildDetailHint(),
+                  ],
+                ),
+              ),
 
-              // 상세 정보 힌트
-              _buildDetailHint(),
-
-              SizedBox(height: 24.h),
+              SizedBox(height: 20.h),
             ],
-          ),
-        ),
       ),
     );
   }
