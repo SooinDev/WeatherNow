@@ -43,16 +43,6 @@ class HomeScreen extends StatelessWidget {
               // 메인 컨텐츠
               SafeArea(
                 child: GestureHandler(
-                  onSwipeUp: () {
-                    if (!controller.isWeeklyViewVisible) {
-                      controller.toggleWeeklyView();
-                    }
-                  },
-                  onSwipeDown: () {
-                    if (controller.isWeeklyViewVisible) {
-                      controller.hideWeeklyView();
-                    }
-                  },
                   onRefresh: () => controller.refreshData(),
                   child: _buildMainContent(controller),
                 ),
@@ -66,6 +56,7 @@ class HomeScreen extends StatelessWidget {
                     weeklyWeather: controller.weeklyWeather ?? [],
                     weatherType:
                         controller.currentWeather?.condition ?? 'Clear',
+                    currentWeather: controller.currentWeather,
                   ),
                 ),
             ],
@@ -79,53 +70,69 @@ class HomeScreen extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: double.infinity,
-      child: Column(
-        children: [
-          // 상단 여백 (iOS 스타일)
-          SizedBox(height: 20.h),
-
-          // 위치 정보
-          LocationDisplay(
-            location: controller.currentLocation,
-            weatherType: controller.currentWeather?.condition ?? 'Clear',
+      child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(Get.context!).size.height -
+                     MediaQuery.of(Get.context!).padding.top,
           ),
+          child: Column(
+              children: [
+              // 상단 여백 (iOS 스타일)
+              SizedBox(height: 20.h),
 
-          SizedBox(height: 30.h),
-
-          // 메인 온도 영역 (화면의 중앙 차지)
-          Expanded(
-            flex: 3,
-            child: Center(
-              child: TemperatureDisplay(
-                weather: controller.currentWeather,
-                isCelsius: controller.isCelsius,
-                onTemperatureUnitToggle: () =>
-                    controller.toggleTemperatureUnit(),
+              // 위치 정보
+              LocationDisplay(
+                location: controller.currentLocation,
                 weatherType: controller.currentWeather?.condition ?? 'Clear',
               ),
-            ),
+
+              SizedBox(height: 24.h),
+
+              // 메인 온도 영역 (스와이프 감지 추가)
+              SizedBox(
+                height: 280.h,
+                child: GestureDetector(
+                  onPanUpdate: (details) {
+                    // 위로 스와이프 감지 (빠른 움직임)
+                    if (details.delta.dy < -8) {
+                      if (!controller.isWeeklyViewVisible) {
+                        controller.toggleWeeklyView();
+                      }
+                    }
+                  },
+                  child: Center(
+                    child: TemperatureDisplay(
+                      weather: controller.currentWeather,
+                      isCelsius: controller.isCelsius,
+                      onTemperatureUnitToggle: () =>
+                          controller.toggleTemperatureUnit(),
+                      weatherType: controller.currentWeather?.condition ?? 'Clear',
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: 16.h),
+
+              // 추가 정보 영역
+              _buildAdditionalInfo(controller),
+
+              SizedBox(height: 30.h),
+
+              // 하단 힌트들
+              _buildBottomHint(),
+
+              SizedBox(height: 6.h),
+
+              // 상세 정보 힌트
+              _buildDetailHint(),
+
+              SizedBox(height: 24.h),
+            ],
           ),
-
-          SizedBox(height: 20.h),
-
-          // 추가 정보 영역
-          SizedBox(
-            height: 160.h, // 120.h에서 160.h로 높이 증가
-            child: _buildAdditionalInfo(controller),
-          ),
-
-          SizedBox(height: 30.h),
-
-          // 하단 힌트들
-          _buildBottomHint(),
-
-          SizedBox(height: 8.h),
-
-          // 상세 정보 힌트
-          _buildDetailHint(),
-
-          SizedBox(height: 32.h),
-        ],
+        ),
       ),
     );
   }
@@ -141,7 +148,7 @@ class HomeScreen extends StatelessWidget {
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeInOut,
       margin: EdgeInsets.symmetric(horizontal: 24.w),
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 18.h),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,

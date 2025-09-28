@@ -4,17 +4,20 @@ import '../../../models/weather_model.dart';
 import '../../../utils/colors.dart';
 import '../../../utils/text_styles.dart';
 import '../../../utils/constants.dart';
+import 'package:intl/intl.dart';
 
 class WeeklyScreen extends StatefulWidget {
   final VoidCallback onClose;
   final List<WeeklyWeatherModel> weeklyWeather;
   final String? weatherType;
+  final WeatherModel? currentWeather;
 
   const WeeklyScreen({
     super.key,
     required this.onClose,
     required this.weeklyWeather,
     this.weatherType,
+    this.currentWeather,
   });
 
   @override
@@ -107,7 +110,12 @@ class _WeeklyScreenState extends State<WeeklyScreen>
                         color: AppConstants.darkPrimaryTextColor,
                       ),
                     ),
-                    SizedBox(height: 30.h),
+
+                    // 일출/일몰 정보 (currentWeather가 있을 때만 표시)
+                    if (widget.currentWeather?.sunrise != null && widget.currentWeather?.sunset != null)
+                      _buildSunriseSunsetInfo(),
+
+                    SizedBox(height: 24.h),
                     Expanded(
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 16.w),
@@ -343,5 +351,116 @@ class _WeeklyScreenState extends State<WeeklyScreen>
       default:
         return condition;
     }
+  }
+
+  Widget _buildSunriseSunsetInfo() {
+    if (widget.currentWeather?.sunrise == null || widget.currentWeather?.sunset == null) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Colors.black.withValues(alpha: 0.07),
+            Colors.black.withValues(alpha: 0.14),
+            Colors.black.withValues(alpha: 0.11),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20.r),
+        border: Border.all(
+          color: AppColors.white20,
+          width: 0.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.black10,
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: IntrinsicHeight(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildSunInfo(
+              '일출',
+              _formatTime(widget.currentWeather!.sunrise!),
+              Icons.wb_sunny_outlined,
+            ),
+            _buildDivider(),
+            _buildSunInfo(
+              '일몰',
+              _formatTime(widget.currentWeather!.sunset!),
+              Icons.brightness_3_outlined,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSunInfo(String label, String time, IconData icon) {
+    return Flexible(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: AppConstants.darkPrimaryTextColor,
+            size: 18.sp,
+          ),
+          SizedBox(height: 8.h),
+          Text(
+            label.toUpperCase(),
+            style: AppTextStyles.detailLabel.copyWith(
+                fontSize: 11.sp,
+                letterSpacing: 0.8,
+                fontWeight: FontWeight.w400,
+                color: AppConstants.darkPrimaryTextColor,
+                height: 1.1),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 4.h),
+          Text(
+            time,
+            style: AppTextStyles.detailValue.copyWith(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.3,
+                color: AppConstants.darkPrimaryTextColor,
+                height: 1.1),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDivider() {
+    return Container(
+      width: 1,
+      height: 45.h,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Colors.transparent,
+            AppColors.white20,
+            Colors.transparent,
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatTime(DateTime dateTime) {
+    return DateFormat('HH:mm').format(dateTime);
   }
 }
