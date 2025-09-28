@@ -17,21 +17,21 @@ dependencies:
   dio: ^5.3.2
   
   # 위치 서비스
-  geolocator: ^10.1.0
-  geocoding: ^2.1.1
-  
+  geolocator: ^12.0.0
+  geocoding: ^3.0.0
+
   # 애니메이션
-  lottie: ^2.7.0
+  lottie: ^3.1.0
   flutter_staggered_animations: ^1.1.1
-  
+
   # 저장소
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.3.0
 
   # 환경변수
   flutter_dotenv: ^5.1.0
 
   # 권한
-  permission_handler: ^11.0.1
+  permission_handler: ^12.0.0
   
   # UI
   flutter_screenutil: ^5.9.0
